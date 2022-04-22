@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Door
   - Spike
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -13,7 +14,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - upper
   - 
   - 
   - 

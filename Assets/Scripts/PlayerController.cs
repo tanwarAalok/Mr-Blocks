@@ -4,26 +4,31 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called before the first frame update
+
     public Rigidbody2D rigidbody2d;
     public float speed = 1f;
     public GameObject panel;
     public GameObject gameOver_panel;
-    [SerializeField]  public static bool isGameFinished;
+    public static bool isGameFinished;
 
-    public GroundCheck groundCheck;
     public float jumpForce = 20;
     public float gravity = -9.81f;
     public float gravityScale = 5;
     float velocity;
 
-    // Update is called once per frame
+
+    public bool isGrounded = false;
+
     void Update()
     {
+        // checking for gameFinished
         if (isGameFinished) return;
 
+
+        // code for player jump
         velocity += gravity * gravityScale * Time.deltaTime;
-        if (groundCheck.isGrounded && velocity < 0)
+
+        if (isGrounded && velocity < 0)
         {
             velocity = 0;
         }
@@ -31,8 +36,11 @@ public class PlayerController : MonoBehaviour
         {
             velocity = jumpForce;
         }
+
         transform.Translate(new Vector3(0, velocity, 0) * Time.deltaTime);
 
+
+        // player movement code
         if (Input.GetAxis("Horizontal") > 0)
         {
             rigidbody2d.velocity = new Vector2(speed, 0f);
@@ -67,16 +75,23 @@ public class PlayerController : MonoBehaviour
 
     public void resetPosition()
     {
-        transform.position = Vector3.zero;
+        transform.position = new Vector3(-4.932122f, -2.970854f, 0);
         isGameFinished = false;
     }
-}
 
-//      else if (Input.GetAxis("Vertical") > 0)
-//{
-//    rigidbody2d.velocity = new Vector2(0f, speed);
-//}
-//        else if (Input.GetAxis("Vertical") < 0)
-//{
-//    rigidbody2d.velocity = new Vector2(0f, -speed);
-//}
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Ground")
+        {
+            isGrounded = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Ground")
+        {
+            isGrounded = false;
+        }
+    }
+}
