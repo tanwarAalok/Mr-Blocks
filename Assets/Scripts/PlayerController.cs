@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 1f;
     public GameObject panel;
     public GameObject gameOver_panel;
+    public GameObject gamePause_panel;
     public static bool isGameFinished;
 
     public float jumpForce = 20;
@@ -21,6 +22,12 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // Game pause 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gamePause();
+        }
+
         // checking for gameFinished
         if (isGameFinished) return;
 
@@ -71,6 +78,13 @@ public class PlayerController : MonoBehaviour
             isGameFinished = true;
 
         }
+    }
+
+
+    public void gamePause()
+    {
+        isGameFinished = !isGameFinished;
+        gamePause_panel.SetActive(isGameFinished);
     }
 
     public void resetPosition()
